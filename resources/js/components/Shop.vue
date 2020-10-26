@@ -1,11 +1,10 @@
 <template>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <!-- products display -->
-            <div class="col-md-6">
-                <div>
-                    <ul v-for="product in products" :key="product.collectionId" class="list-unstyled">
-                        <li class="media">
+            <div class="col">                
+                    <ul class="unstyled-list">
+                        <li v-for="product in products" :key="product.collectionId" class="media">
                             <img 
                                 :src="product.artworkUrl60"
                                 class="mr-3"
@@ -26,18 +25,30 @@
                         </li>
                     </ul>
                 </div>
-            </div>
+            
 
-            <div class="col-md-6">
-                <ul class="list-unstyled" v-for="item in cart" :key="item.collectionId">
-                    <li><img :src="item.artworkUrl60" class="mr-3" :alt="item.collectionName" /></li>
-                    <li>{{item.collectionName}}</li>
-                    <li>{{item.collectionPrice}}</li>
-                </ul>
-                <div>
-                    <p><b>Amount Due:</b> ${{total}}</p>
-                    <button class="btn btn-primary" @click.prevent="checkout()">Checkout</button>
-                    <button class="btn btn-danger" @click.prevent="clearCart()">Clear cart</button>
+            <div class="col">
+                <div v-if="cart.length">
+                    <ul class="unstyled-list">
+                        <li v-for="item in cart" :key="item.collectionId" class="media">
+                            <img :src="item.artworkUrl60" class="mr-3" :alt="item.collectionName" />
+
+                            <div class="media-body">
+                                {{item.artistName}} - {{item.collectionName}}
+                                <ul class="list-unstyled">
+                                    <li>Tracks: {{item.trackCount}}</li>
+                                    <li>Price: <b>{{item.collectionPrice}}</b></li>
+                                    <li>{{item.copyright}}</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div v-else>
+                    <ul class="unstyled-list">
+                        <li>Oh my, your cart is empty</li>
+                    </ul>
                 </div>
 
                 <div v-if="readyForCheckout">
@@ -57,6 +68,7 @@
                         </div>
 
                         <div class="form-group row">
+                            <button class="btn btn-danger" @click.prevent="clearCart()">Clear cart</button>
                             <button class="btn btn-primary">Place Order</button>
                         </div>
                     </form>
@@ -74,7 +86,7 @@ export default {
             products: null,
             total: 0.00,
             amountPaid: 0.00,
-            readyForCheckout: true
+            readyForCheckout: false
         }
     },
     mounted() {
@@ -90,14 +102,12 @@ export default {
         addToCart(product) {
             this.cart.push(product);
             this.total = this.total + product.collectionPrice;
+            this.readyForCheckout = true;
         },
         clearCart() {
             this.cart = []
             this.total = 0.00;
             this.readyForCheckout = false;
-        },
-        checkout() {
-            this.readyForCheckout = true;
         },
         placeOrder() {
             return axios.get('/change', {
