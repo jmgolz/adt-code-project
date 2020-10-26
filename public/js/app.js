@@ -1917,11 +1917,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      cart: {}
+      cart: [],
+      products: null,
+      total: 0.00,
+      amountPaid: 0.00,
+      baseUrl: 'https://itunes.apple.com/search'
     };
   },
   mounted: function mounted() {
-    console.log("We're here!");
+    this.getProducts();
+  },
+  methods: {
+    getProducts: function getProducts() {
+      var _this = this;
+
+      return axios.get(this.baseUrl, {
+        params: {
+          term: 'bts',
+          // Look, their music is catchy, OKAY?
+          limit: 10,
+          entity: 'album'
+        }
+      }).then(function (response) {
+        console.log(response.data.results);
+        _this.products = response.data.results;
+      });
+    },
+    addToCart: function addToCart(product) {
+      this.cart.push(product);
+    },
+    clearCart: function clearCart() {
+      this.cart = [];
+    }
   }
 });
 
