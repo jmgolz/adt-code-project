@@ -1940,6 +1940,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1965,16 +1979,16 @@ __webpack_require__.r(__webpack_exports__);
           entity: 'album'
         }
       }).then(function (response) {
-        console.log(response.data.results);
         _this.products = response.data.results;
       });
     },
     addToCart: function addToCart(product) {
       this.cart.push(product);
-      console.log(this.cart);
+      this.total = this.total + product.collectionPrice;
     },
     clearCart: function clearCart() {
       this.cart = [];
+      this.total = 0.00;
     }
   }
 });
@@ -19629,60 +19643,130 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    _vm._l(_vm.products, function(product) {
-      return _c(
-        "ul",
-        { key: product.collectionId, staticClass: "list-unstyled" },
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c(
+          "div",
+          _vm._l(_vm.products, function(product) {
+            return _c(
+              "ul",
+              { key: product.collectionId, staticClass: "list-unstyled" },
+              [
+                _c("li", { staticClass: "media" }, [
+                  _c("img", {
+                    staticClass: "mr-3",
+                    attrs: {
+                      src: product.artworkUrl60,
+                      alt: product.collectionName
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "media-body" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(product.artistName) +
+                        " - " +
+                        _vm._s(product.collectionName) +
+                        "\n                            "
+                    ),
+                    _c("ul", { staticClass: "list-unstyled" }, [
+                      _c("li", [
+                        _vm._v("Tracks: " + _vm._s(product.trackCount))
+                      ]),
+                      _vm._v(" "),
+                      _c("li", [
+                        _vm._v("Price: "),
+                        _c("b", [_vm._v(_vm._s(product.collectionPrice))])
+                      ]),
+                      _vm._v(" "),
+                      _c("li", [_vm._v(_vm._s(product.copyright))]),
+                      _vm._v(" "),
+                      _c("li", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.addToCart(product)
+                              }
+                            }
+                          },
+                          [_vm._v("Add to Cart")]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ]
+            )
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-md-6" },
         [
-          _c("li", { staticClass: "media" }, [
-            _c("img", {
-              staticClass: "mr-3",
-              attrs: { src: product.artworkUrl60, alt: product.collectionName }
-            }),
-            _vm._v(" "),
-            _c("div", { staticClass: "media-body" }, [
-              _vm._v(
-                "\n                " +
-                  _vm._s(product.artistName) +
-                  " - " +
-                  _vm._s(product.collectionName) +
-                  "\n                "
-              ),
-              _c("ul", { staticClass: "list-unstyled" }, [
-                _c("li", [_vm._v("Tracks: " + _vm._s(product.trackCount))]),
-                _vm._v(" "),
+          _vm._l(_vm.cart, function(item) {
+            return _c(
+              "ul",
+              { key: item.collectionId, staticClass: "list-unstyled" },
+              [
                 _c("li", [
-                  _vm._v("Price: "),
-                  _c("b", [_vm._v(_vm._s(product.collectionPrice))])
+                  _c("img", {
+                    staticClass: "mr-3",
+                    attrs: { src: item.artworkUrl60, alt: item.collectionName }
+                  })
                 ]),
                 _vm._v(" "),
-                _c("li", [_vm._v(_vm._s(product.copyright))]),
+                _c("li", [_vm._v(_vm._s(item.collectionName))]),
                 _vm._v(" "),
-                _c("li", [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-success",
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.addToCart(product)
-                        }
-                      }
-                    },
-                    [_vm._v("Add to Cart")]
-                  )
-                ])
-              ])
-            ])
-          ])
-        ]
+                _c("li", [_vm._v(_vm._s(item.collectionPrice))])
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _c("p", [
+            _c("b", [_vm._v("Amount Due:")]),
+            _vm._v(" $" + _vm._s(_vm.total))
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.addToCart(_vm.product)
+                }
+              }
+            },
+            [_vm._v("Checkout")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-danger",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.clearCart()
+                }
+              }
+            },
+            [_vm._v("Clear cart")]
+          )
+        ],
+        2
       )
-    }),
-    0
-  )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
