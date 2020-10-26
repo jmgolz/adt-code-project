@@ -13,7 +13,7 @@ class StoreApi extends Controller
 
     public function getChangeOwed(Request $request)
     {
-        $amountOwed = explode('.', 2337.37);
+        $amountOwed = explode('.', ($request['amountPaid'] - $request['orderTotal']));
         $amountOwedByDenomination = array();
 
         // Calculate dollar amounts
@@ -37,7 +37,6 @@ class StoreApi extends Controller
                 }
             }   
         }
-
         return response()->json($amountOwedByDenomination);
     }
 }
