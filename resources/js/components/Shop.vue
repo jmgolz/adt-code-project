@@ -45,14 +45,14 @@
                          <div class="form-group row">
                             <label for="amountDue" class="col-sm-3 col-form-label">Amount Due:</label>
                             <div class="col-sm-6">
-                                <input type="text" readonly class="form-control-plaintext" id="amountDue" :value="total">
+                                <input v-model="total" type="text" readonly class="form-control-plaintext" id="amountDue">
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label for="payment" class="col-sm-4 col-form-label">Payment Amount (in USD):</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="payment">
+                                <input v-model="amountPaid" type="text" class="form-control" id="payment">
                             </div>
                         </div>
 
@@ -74,7 +74,6 @@ export default {
             products: null,
             total: 0.00,
             amountPaid: 0.00,
-            baseUrl: 'https://itunes.apple.com/search',
             readyForCheckout: true
         }
     },
@@ -83,14 +82,8 @@ export default {
     },
     methods: {
         getProducts() {
-            return axios.get(
-                this.baseUrl,
-                {params: {
-                    term: 'bts', // Look, their music is catchy, OKAY?
-                    limit: 10,
-                    entity: 'album'
-                }}
-            ).then(response => {
+            return axios.get('/products')
+            .then(response => {
                 this.products = response.data.results;
             });
         },
@@ -107,7 +100,15 @@ export default {
             this.readyForCheckout = true;
         },
         placeOrder() {
-
+            return axios.get('/change', {
+                params: {
+                    amountPaid: this.amountPaid,
+                    orderTotal: this.total
+                }
+            })
+            .then(response => {
+                console.log(response);
+            })
         }
     }
 }

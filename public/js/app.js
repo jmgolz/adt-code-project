@@ -1983,7 +1983,6 @@ __webpack_require__.r(__webpack_exports__);
       products: null,
       total: 0.00,
       amountPaid: 0.00,
-      baseUrl: 'https://itunes.apple.com/search',
       readyForCheckout: true
     };
   },
@@ -1994,14 +1993,7 @@ __webpack_require__.r(__webpack_exports__);
     getProducts: function getProducts() {
       var _this = this;
 
-      return axios.get(this.baseUrl, {
-        params: {
-          term: 'bts',
-          // Look, their music is catchy, OKAY?
-          limit: 10,
-          entity: 'album'
-        }
-      }).then(function (response) {
+      return axios.get('/products').then(function (response) {
         _this.products = response.data.results;
       });
     },
@@ -2017,7 +2009,16 @@ __webpack_require__.r(__webpack_exports__);
     checkout: function checkout() {
       this.readyForCheckout = true;
     },
-    placeOrder: function placeOrder() {}
+    placeOrder: function placeOrder() {
+      return axios.get('/change', {
+        params: {
+          amountPaid: this.amountPaid,
+          orderTotal: this.total
+        }
+      }).then(function (response) {
+        console.log(response);
+      });
+    }
   }
 });
 
@@ -19818,20 +19819,69 @@ var render = function() {
                       _vm._v(" "),
                       _c("div", { staticClass: "col-sm-6" }, [
                         _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.total,
+                              expression: "total"
+                            }
+                          ],
                           staticClass: "form-control-plaintext",
                           attrs: {
                             type: "text",
                             readonly: "",
                             id: "amountDue"
                           },
-                          domProps: { value: _vm.total }
+                          domProps: { value: _vm.total },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.total = $event.target.value
+                            }
+                          }
                         })
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(0),
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-4 col-form-label",
+                          attrs: { for: "payment" }
+                        },
+                        [_vm._v("Payment Amount (in USD):")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-4" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.amountPaid,
+                              expression: "amountPaid"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "text", id: "payment" },
+                          domProps: { value: _vm.amountPaid },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.amountPaid = $event.target.value
+                            }
+                          }
+                        })
+                      ])
+                    ]),
                     _vm._v(" "),
-                    _vm._m(1)
+                    _vm._m(0)
                   ]
                 )
               ])
@@ -19843,25 +19893,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group row" }, [
-      _c(
-        "label",
-        { staticClass: "col-sm-4 col-form-label", attrs: { for: "payment" } },
-        [_vm._v("Payment Amount (in USD):")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-4" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "text", id: "payment" }
-        })
-      ])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
