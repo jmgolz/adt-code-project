@@ -1914,6 +1914,68 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1921,7 +1983,8 @@ __webpack_require__.r(__webpack_exports__);
       products: null,
       total: 0.00,
       amountPaid: 0.00,
-      baseUrl: 'https://itunes.apple.com/search'
+      baseUrl: 'https://itunes.apple.com/search',
+      readyForCheckout: true
     };
   },
   mounted: function mounted() {
@@ -1939,16 +2002,22 @@ __webpack_require__.r(__webpack_exports__);
           entity: 'album'
         }
       }).then(function (response) {
-        console.log(response.data.results);
         _this.products = response.data.results;
       });
     },
     addToCart: function addToCart(product) {
       this.cart.push(product);
+      this.total = this.total + product.collectionPrice;
     },
     clearCart: function clearCart() {
       this.cart = [];
-    }
+      this.total = 0.00;
+      this.readyForCheckout = false;
+    },
+    checkout: function checkout() {
+      this.readyForCheckout = true;
+    },
+    placeOrder: function placeOrder() {}
   }
 });
 
@@ -19602,14 +19671,204 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container-fluid" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-6" }, [
+        _c(
+          "div",
+          _vm._l(_vm.products, function(product) {
+            return _c(
+              "ul",
+              { key: product.collectionId, staticClass: "list-unstyled" },
+              [
+                _c("li", { staticClass: "media" }, [
+                  _c("img", {
+                    staticClass: "mr-3",
+                    attrs: {
+                      src: product.artworkUrl60,
+                      alt: product.collectionName
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "media-body" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(product.artistName) +
+                        " - " +
+                        _vm._s(product.collectionName) +
+                        "\n                            "
+                    ),
+                    _c("ul", { staticClass: "list-unstyled" }, [
+                      _c("li", [
+                        _vm._v("Tracks: " + _vm._s(product.trackCount))
+                      ]),
+                      _vm._v(" "),
+                      _c("li", [
+                        _vm._v("Price: "),
+                        _c("b", [_vm._v(_vm._s(product.collectionPrice))])
+                      ]),
+                      _vm._v(" "),
+                      _c("li", [_vm._v(_vm._s(product.copyright))]),
+                      _vm._v(" "),
+                      _c("li", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.addToCart(product)
+                              }
+                            }
+                          },
+                          [_vm._v("Add to Cart")]
+                        )
+                      ])
+                    ])
+                  ])
+                ])
+              ]
+            )
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col-md-6" },
+        [
+          _vm._l(_vm.cart, function(item) {
+            return _c(
+              "ul",
+              { key: item.collectionId, staticClass: "list-unstyled" },
+              [
+                _c("li", [
+                  _c("img", {
+                    staticClass: "mr-3",
+                    attrs: { src: item.artworkUrl60, alt: item.collectionName }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("li", [_vm._v(_vm._s(item.collectionName))]),
+                _vm._v(" "),
+                _c("li", [_vm._v(_vm._s(item.collectionPrice))])
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _c("div", [
+            _c("p", [
+              _c("b", [_vm._v("Amount Due:")]),
+              _vm._v(" $" + _vm._s(_vm.total))
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.checkout()
+                  }
+                }
+              },
+              [_vm._v("Checkout")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.clearCart()
+                  }
+                }
+              },
+              [_vm._v("Clear cart")]
+            )
+          ]),
+          _vm._v(" "),
+          _vm.readyForCheckout
+            ? _c("div", [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.placeOrder($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-3 col-form-label",
+                          attrs: { for: "amountDue" }
+                        },
+                        [_vm._v("Amount Due:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-6" }, [
+                        _c("input", {
+                          staticClass: "form-control-plaintext",
+                          attrs: {
+                            type: "text",
+                            readonly: "",
+                            id: "amountDue"
+                          },
+                          domProps: { value: _vm.total }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _vm._m(1)
+                  ]
+                )
+              ])
+            : _vm._e()
+        ],
+        2
+      )
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("This thing on?")])])
+    return _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        { staticClass: "col-sm-4 col-form-label", attrs: { for: "payment" } },
+        [_vm._v("Payment Amount (in USD):")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-4" }, [
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { type: "text", id: "payment" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Place Order")])
+    ])
   }
 ]
 render._withStripped = true
