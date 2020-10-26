@@ -1914,6 +1914,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1945,6 +1971,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     addToCart: function addToCart(product) {
       this.cart.push(product);
+      console.log(this.cart);
     },
     clearCart: function clearCart() {
       this.cart = [];
@@ -19602,16 +19629,62 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    _vm._l(_vm.products, function(product) {
+      return _c(
+        "ul",
+        { key: product.collectionId, staticClass: "list-unstyled" },
+        [
+          _c("li", { staticClass: "media" }, [
+            _c("img", {
+              staticClass: "mr-3",
+              attrs: { src: product.artworkUrl60, alt: product.collectionName }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "media-body" }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(product.artistName) +
+                  " - " +
+                  _vm._s(product.collectionName) +
+                  "\n                "
+              ),
+              _c("ul", { staticClass: "list-unstyled" }, [
+                _c("li", [_vm._v("Tracks: " + _vm._s(product.trackCount))]),
+                _vm._v(" "),
+                _c("li", [
+                  _vm._v("Price: "),
+                  _c("b", [_vm._v(_vm._s(product.collectionPrice))])
+                ]),
+                _vm._v(" "),
+                _c("li", [_vm._v(_vm._s(product.copyright))]),
+                _vm._v(" "),
+                _c("li", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.addToCart(product)
+                        }
+                      }
+                    },
+                    [_vm._v("Add to Cart")]
+                  )
+                ])
+              ])
+            ])
+          ])
+        ]
+      )
+    }),
+    0
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h1", [_vm._v("This thing on?")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
