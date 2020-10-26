@@ -1954,6 +1954,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1961,7 +1983,8 @@ __webpack_require__.r(__webpack_exports__);
       products: null,
       total: 0.00,
       amountPaid: 0.00,
-      baseUrl: 'https://itunes.apple.com/search'
+      baseUrl: 'https://itunes.apple.com/search',
+      readyForCheckout: true
     };
   },
   mounted: function mounted() {
@@ -1989,7 +2012,12 @@ __webpack_require__.r(__webpack_exports__);
     clearCart: function clearCart() {
       this.cart = [];
       this.total = 0.00;
-    }
+      this.readyForCheckout = false;
+    },
+    checkout: function checkout() {
+      this.readyForCheckout = true;
+    },
+    placeOrder: function placeOrder() {}
   }
 });
 
@@ -19730,45 +19758,119 @@ var render = function() {
             )
           }),
           _vm._v(" "),
-          _c("p", [
-            _c("b", [_vm._v("Amount Due:")]),
-            _vm._v(" $" + _vm._s(_vm.total))
+          _c("div", [
+            _c("p", [
+              _c("b", [_vm._v("Amount Due:")]),
+              _vm._v(" $" + _vm._s(_vm.total))
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-primary",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.checkout()
+                  }
+                }
+              },
+              [_vm._v("Checkout")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger",
+                on: {
+                  click: function($event) {
+                    $event.preventDefault()
+                    return _vm.clearCart()
+                  }
+                }
+              },
+              [_vm._v("Clear cart")]
+            )
           ]),
           _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  return _vm.addToCart(_vm.product)
-                }
-              }
-            },
-            [_vm._v("Checkout")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-danger",
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  return _vm.clearCart()
-                }
-              }
-            },
-            [_vm._v("Clear cart")]
-          )
+          _vm.readyForCheckout
+            ? _c("div", [
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.placeOrder($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "form-group row" }, [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "col-sm-3 col-form-label",
+                          attrs: { for: "amountDue" }
+                        },
+                        [_vm._v("Amount Due:")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-sm-6" }, [
+                        _c("input", {
+                          staticClass: "form-control-plaintext",
+                          attrs: {
+                            type: "text",
+                            readonly: "",
+                            id: "amountDue"
+                          },
+                          domProps: { value: _vm.total }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _vm._m(1)
+                  ]
+                )
+              ])
+            : _vm._e()
         ],
         2
       )
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c(
+        "label",
+        { staticClass: "col-sm-4 col-form-label", attrs: { for: "payment" } },
+        [_vm._v("Payment Amount (in USD):")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-4" }, [
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { type: "text", id: "payment" }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Place Order")])
+    ])
+  }
+]
 render._withStripped = true
 
 

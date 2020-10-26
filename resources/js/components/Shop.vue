@@ -34,14 +34,36 @@
                     <li>{{item.collectionName}}</li>
                     <li>{{item.collectionPrice}}</li>
                 </ul>
+                <div>
+                    <p><b>Amount Due:</b> ${{total}}</p>
+                    <button class="btn btn-primary" @click.prevent="checkout()">Checkout</button>
+                    <button class="btn btn-danger" @click.prevent="clearCart()">Clear cart</button>
+                </div>
 
-                <p><b>Amount Due:</b> ${{total}}</p>
-                <button class="btn btn-primary" @click.prevent="addToCart(product)">Checkout</button>
-                <button class="btn btn-danger" @click.prevent="clearCart()">Clear cart</button>
+                <div v-if="readyForCheckout">
+                     <form @submit.prevent="placeOrder">
+                         <div class="form-group row">
+                            <label for="amountDue" class="col-sm-3 col-form-label">Amount Due:</label>
+                            <div class="col-sm-6">
+                                <input type="text" readonly class="form-control-plaintext" id="amountDue" :value="total">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="payment" class="col-sm-4 col-form-label">Payment Amount (in USD):</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="payment">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <button class="btn btn-primary">Place Order</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    
+    </div>    
 </template>
 
 <script>
@@ -52,7 +74,8 @@ export default {
             products: null,
             total: 0.00,
             amountPaid: 0.00,
-            baseUrl: 'https://itunes.apple.com/search'
+            baseUrl: 'https://itunes.apple.com/search',
+            readyForCheckout: true
         }
     },
     mounted() {
@@ -78,6 +101,13 @@ export default {
         clearCart() {
             this.cart = []
             this.total = 0.00;
+            this.readyForCheckout = false;
+        },
+        checkout() {
+            this.readyForCheckout = true;
+        },
+        placeOrder() {
+
         }
     }
 }
