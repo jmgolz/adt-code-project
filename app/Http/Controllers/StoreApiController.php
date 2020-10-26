@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,10 @@ class StoreApiController extends Controller
 {
     private $dollarDenominations = array(100, 50, 20, 10, 5, 1);
     private $centDenominations = array(25, 10, 5, 1);
+    private $appleAlbumsApiBaseURL = "https://itunes.apple.com/search?";
 
+    // BTS is catchy, OK?! Don't judge me!
+    private $appleAlbumsApiSearchString = "term=bts&limit=5&entity=album";
 
     public function getChangeOwed(Request $request)
     {
@@ -38,5 +42,14 @@ class StoreApiController extends Controller
             }   
         }
         return response()->json($amountOwedByDenomination);
+    }
+
+    function getShopProducts()
+    {
+        $response = Http::get($this->appleAlbumsApiBaseURL . $this->appleAlbumsApiSearchString);
+
+        // This will return 5 BTS albums. 
+        // Or rather, the 5 best albums of ALL. TIME.
+        return $response->json();
     }
 }

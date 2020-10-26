@@ -18,3 +18,4 @@ Route::get('/', function () {
 });
 
 Route::get('change', [StoreApiController::class, 'getChangeOwed']);
+Route::get('products', [StoreApiController::class, 'getShopProducts']);
