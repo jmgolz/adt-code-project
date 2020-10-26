@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\StoreApi;
+use App\Http\Controllers\StoreApiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('main');
 });
 
-Route::get('change', [StoreApi::class, 'getChangeOwed']);
+Route::get('change', [StoreApiController::class, 'getChangeOwed']);

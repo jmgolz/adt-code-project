@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
-class StoreApi extends Controller
+class StoreApiController extends Controller
 {
     private $dollarDenominations = array(100, 50, 20, 10, 5, 1);
     private $centDenominations = array(25, 10, 5, 1);
