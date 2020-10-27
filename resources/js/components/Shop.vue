@@ -1,69 +1,117 @@
 <template>
-    <div class="container-fluid">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <p class="navbar-brand" >K-Pop Appreciation Station</p>
+        </nav>
+
         <div class="row">
             <!-- products display -->
-            <div class="col-md-6">
-                <div>
-                    <ul v-for="product in products" :key="product.collectionId" class="list-unstyled">
-                        <li class="media">
+            <div class="col">                
+                    <ul class="list-unstyled">
+                        <li v-for="product in products" :key="product.collectionId" class="media rounded border border-secondary product-media-card">
                             <img 
-                                :src="product.artworkUrl60"
+                                :src="product.artworkUrl100"
                                 class="mr-3"
                                 :alt="product.collectionName"
                             />
 
                             <div class="media-body">
-                                {{product.artistName}} - {{product.collectionName}}
+                                {{product.artistName}}: {{product.collectionName}}
                                 <ul class="list-unstyled">
                                     <li>Tracks: {{product.trackCount}}</li>
                                     <li>Price: <b>{{product.collectionPrice}}</b></li>
                                     <li>{{product.copyright}}</li>
                                     <li>
-                                        <button class="btn btn-success" @click.prevent="addToCart(product)">Add to Cart</button>
+                                        <button class="btn btn-success btn-sm" @click.prevent="addToCart(product)">Add to Cart</button>
                                     </li>
                                 </ul>
                             </div>
                         </li>
                     </ul>
                 </div>
-            </div>
+            
 
-            <div class="col-md-6">
-                <ul class="list-unstyled" v-for="item in cart" :key="item.collectionId">
-                    <li><img :src="item.artworkUrl60" class="mr-3" :alt="item.collectionName" /></li>
-                    <li>{{item.collectionName}}</li>
-                    <li>{{item.collectionPrice}}</li>
-                </ul>
-                <div>
-                    <p><b>Amount Due:</b> ${{total}}</p>
-                    <button class="btn btn-primary" @click.prevent="checkout()">Checkout</button>
-                    <button class="btn btn-danger" @click.prevent="clearCart()">Clear cart</button>
+            <div class="col">
+                <h3>Your Cart</h3>
+                <!-- Cart display -->
+                <div v-if="cart.length">
+                    <ul class="list-unstyled">
+                        <li v-for="item in cart" :key="item.collectionId" class="media rounded border border-secondary product-media-card">
+                            <img :src="item.artworkUrl60" class="mr-3" :alt="item.collectionName" />
+
+                            <div class="media-body">
+                                {{item.artistName}} - {{item.collectionName}}
+                                <ul class="list-unstyled">
+                                    <li>Tracks: {{item.trackCount}}</li>
+                                    <li>Price: <b>{{item.collectionPrice}}</b></li>
+                                    <li>{{item.copyright}}</li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div v-else>
+                    <ul class="list-unstyled">
+                        <li class="media rounded border border-secondary product-media-card">
+                            <div class="media-body">
+                                Oh my, your cart is empty!
+                            </div>
+                        </li>
+                    </ul>
                 </div>
 
+                <!-- Checkout display -->
                 <div v-if="readyForCheckout">
-                     <form @submit.prevent="placeOrder">
+                     <form @submit.prevent="placeOrder" class="jumbotron jumbotron-padding-fix rounded border border-secondary">
                          <div class="form-group row">
-                            <label for="amountDue" class="col-sm-3 col-form-label">Amount Due:</label>
-                            <div class="col-sm-6">
+                            <label for="amountDue" class="col col-form-label">Amount Due:</label>
+                            <div class="col">
                                 <input v-model="total" type="text" readonly class="form-control-plaintext" id="amountDue">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="payment" class="col-sm-4 col-form-label">Payment Amount (in USD):</label>
-                            <div class="col-sm-4">
-                                <input v-model="amountPaid" type="text" class="form-control" id="payment">
+                            <label for="payment" class="col col-form-label">Payment Amount (in USD):</label>
+                            <div class="col">
+                                <input v-model="amountPaid" type="text" class="form-control" id="payment" required>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <button class="btn btn-primary">Place Order</button>
+                            <div class="col">
+                                <button class="btn btn-danger" @click.prevent="clearCart()">Clear cart</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-primary">Place Order</button>
+                            </div>
                         </div>
                     </form>
                 </div>
+
+                <!-- Change owed -->
+                <div v-if="changeOwed" class="jumbotron jumbotron-padding-fix rounded border border-secondary">
+                    <h5>Change Owed</h5>
+                    <ul class="list-unstyled">
+                        <li>Dollars</li>
+                        <li v-if="changeOwed.dollars" v-for="(value, key) in changeOwed.dollars">
+                            {{key}} dollar(s): {{value}}
+                        </li>
+                        <li v-else>None</li>
+                    </ul>
+
+                    <ul class="list-unstyled">
+                        <li>Cents</li>
+                        <li v-if="changeOwed.cents" v-for="(value, key) in changeOwed.cents">
+                            {{key}} cent(s): {{value}}
+                        </li>
+                        <li v-else>None</li>
+                    </ul>
+                </div>
             </div>
+
         </div>
-    </div>    
+    </div> 
 </template>
 
 <script>
@@ -73,8 +121,9 @@ export default {
             cart: [],
             products: null,
             total: 0.00,
-            amountPaid: 0.00,
-            readyForCheckout: true
+            amountPaid: null,
+            readyForCheckout: false,
+            changeOwed: null
         }
     },
     mounted() {
@@ -90,14 +139,13 @@ export default {
         addToCart(product) {
             this.cart.push(product);
             this.total = this.total + product.collectionPrice;
+            this.readyForCheckout = true;
         },
         clearCart() {
             this.cart = []
             this.total = 0.00;
+            this.amountPaid = null,
             this.readyForCheckout = false;
-        },
-        checkout() {
-            this.readyForCheckout = true;
         },
         placeOrder() {
             return axios.get('/change', {
@@ -107,7 +155,9 @@ export default {
                 }
             })
             .then(response => {
-                console.log(response);
+                this.changeOwed = response.data;
+                this.amountPaid = null,
+                console.log(this.changeOwed);
             })
         }
     }

@@ -1,3 +1,13 @@
-body {
-    
+.cardWidth {
+    width:9rem;
+}
+
+.product-media-card {
+    background-color: lightgray;
+    margin: 5px 0px 5px 0px;
+    padding: 5px;
+}
+
+.jumbotron-padding-fix {
+    padding: 1rem 2rem;
 }
