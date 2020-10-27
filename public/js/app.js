@@ -2019,6 +2019,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -19718,11 +19723,13 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
+    _vm._m(0),
+    _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col" }, [
         _c(
           "ul",
-          { staticClass: "unstyled-list" },
+          { staticClass: "list-unstyled" },
           _vm._l(_vm.products, function(product) {
             return _c(
               "li",
@@ -19744,7 +19751,7 @@ var render = function() {
                   _vm._v(
                     "\n                            " +
                       _vm._s(product.artistName) +
-                      " - " +
+                      ": " +
                       _vm._s(product.collectionName) +
                       "\n                            "
                   ),
@@ -19783,6 +19790,8 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "col" }, [
+        _c("h3", [_vm._v("Your Cart")]),
+        _vm._v(" "),
         _vm.cart.length
           ? _c("div", [
               _c(
@@ -19832,13 +19841,15 @@ var render = function() {
                 0
               )
             ])
-          : _c("div", [_vm._m(0)]),
+          : _c("div", [_vm._m(1)]),
         _vm._v(" "),
         _vm.readyForCheckout
           ? _c("div", [
               _c(
                 "form",
                 {
+                  staticClass:
+                    "jumbotron jumbotron-padding-fix rounded border border-secondary",
                   on: {
                     submit: function($event) {
                       $event.preventDefault()
@@ -19934,7 +19945,7 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _vm._m(1)
+                    _vm._m(2)
                   ])
                 ]
               )
@@ -19942,61 +19953,82 @@ var render = function() {
           : _vm._e(),
         _vm._v(" "),
         _vm.changeOwed
-          ? _c("div", { staticClass: "jumbotron jumbotron-padding-fix" }, [
-              _c("h5", [_vm._v("Change Owed")]),
-              _vm._v(" "),
-              _c(
-                "ul",
-                { staticClass: "list-unstyled" },
-                [
-                  _c("li", [_vm._v("Dollars")]),
-                  _vm._v(" "),
-                  _vm._l(_vm.changeOwed.dollars, function(value, key) {
-                    return _vm.changeOwed.dollars
-                      ? _c("li", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(key) +
-                              " dollar(s): " +
-                              _vm._s(value) +
-                              "\n                    "
-                          )
-                        ])
-                      : _c("li", [_vm._v("None")])
-                  })
-                ],
-                2
-              ),
-              _vm._v(" "),
-              _c(
-                "ul",
-                { staticClass: "list-unstyled" },
-                [
-                  _c("li", [_vm._v("Cents")]),
-                  _vm._v(" "),
-                  _vm._l(_vm.changeOwed.cents, function(value, key) {
-                    return _vm.changeOwed.cents
-                      ? _c("li", [
-                          _vm._v(
-                            "\n                        " +
-                              _vm._s(key) +
-                              " cent(s): " +
-                              _vm._s(value) +
-                              "\n                    "
-                          )
-                        ])
-                      : _c("li", [_vm._v("None")])
-                  })
-                ],
-                2
-              )
-            ])
+          ? _c(
+              "div",
+              {
+                staticClass:
+                  "jumbotron jumbotron-padding-fix rounded border border-secondary"
+              },
+              [
+                _c("h5", [_vm._v("Change Owed")]),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  { staticClass: "list-unstyled" },
+                  [
+                    _c("li", [_vm._v("Dollars")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.changeOwed.dollars, function(value, key) {
+                      return _vm.changeOwed.dollars
+                        ? _c("li", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(key) +
+                                " dollar(s): " +
+                                _vm._s(value) +
+                                "\n                    "
+                            )
+                          ])
+                        : _c("li", [_vm._v("None")])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  { staticClass: "list-unstyled" },
+                  [
+                    _c("li", [_vm._v("Cents")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.changeOwed.cents, function(value, key) {
+                      return _vm.changeOwed.cents
+                        ? _c("li", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(key) +
+                                " cent(s): " +
+                                _vm._s(value) +
+                                "\n                    "
+                            )
+                          ])
+                        : _c("li", [_vm._v("None")])
+                    })
+                  ],
+                  2
+                )
+              ]
+            )
           : _vm._e()
       ])
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "nav",
+      { staticClass: "navbar navbar-expand-lg navbar-dark bg-dark" },
+      [
+        _c("p", { staticClass: "navbar-brand" }, [
+          _vm._v("K-Pop Appreciation Station")
+        ])
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

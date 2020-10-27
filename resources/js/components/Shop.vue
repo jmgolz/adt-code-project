@@ -1,9 +1,13 @@
 <template>
     <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <p class="navbar-brand" >K-Pop Appreciation Station</p>
+        </nav>
+
         <div class="row">
             <!-- products display -->
             <div class="col">                
-                    <ul class="unstyled-list">
+                    <ul class="list-unstyled">
                         <li v-for="product in products" :key="product.collectionId" class="media rounded border border-secondary product-media-card">
                             <img 
                                 :src="product.artworkUrl100"
@@ -12,7 +16,7 @@
                             />
 
                             <div class="media-body">
-                                {{product.artistName}} - {{product.collectionName}}
+                                {{product.artistName}}: {{product.collectionName}}
                                 <ul class="list-unstyled">
                                     <li>Tracks: {{product.trackCount}}</li>
                                     <li>Price: <b>{{product.collectionPrice}}</b></li>
@@ -28,6 +32,7 @@
             
 
             <div class="col">
+                <h3>Your Cart</h3>
                 <!-- Cart display -->
                 <div v-if="cart.length">
                     <ul class="list-unstyled">
@@ -58,7 +63,7 @@
 
                 <!-- Checkout display -->
                 <div v-if="readyForCheckout">
-                     <form @submit.prevent="placeOrder">
+                     <form @submit.prevent="placeOrder" class="jumbotron jumbotron-padding-fix rounded border border-secondary">
                          <div class="form-group row">
                             <label for="amountDue" class="col col-form-label">Amount Due:</label>
                             <div class="col">
@@ -85,7 +90,7 @@
                 </div>
 
                 <!-- Change owed -->
-                <div v-if="changeOwed" class="jumbotron jumbotron-padding-fix">
+                <div v-if="changeOwed" class="jumbotron jumbotron-padding-fix rounded border border-secondary">
                     <h5>Change Owed</h5>
                     <ul class="list-unstyled">
                         <li>Dollars</li>
