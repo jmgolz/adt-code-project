@@ -2055,6 +2055,7 @@ __webpack_require__.r(__webpack_exports__);
       this.cart = [];
       this.total = 0.00;
       this.amountPaid = null, this.readyForCheckout = false;
+      this.changeOwed = null;
     },
     placeOrder: function placeOrder() {
       var _this2 = this;
@@ -2066,7 +2067,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         _this2.changeOwed = response.data;
-        _this2.amountPaid = null, console.log(_this2.changeOwed);
+        _this2.amountPaid = null;
       });
     }
   }

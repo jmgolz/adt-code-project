@@ -146,6 +146,7 @@ export default {
             this.total = 0.00;
             this.amountPaid = null,
             this.readyForCheckout = false;
+            this.changeOwed = null;
         },
         placeOrder() {
             return axios.get('/change', {
@@ -156,9 +157,8 @@ export default {
             })
             .then(response => {
                 this.changeOwed = response.data;
-                this.amountPaid = null,
-                console.log(this.changeOwed);
-            })
+                this.amountPaid = null;
+            });
         }
     }
 }
