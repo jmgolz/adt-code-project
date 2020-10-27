@@ -1988,14 +1988,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       cart: [],
       products: null,
       total: 0.00,
-      amountPaid: 0.00,
-      readyForCheckout: false
+      amountPaid: null,
+      readyForCheckout: false,
+      changeOwed: {}
     };
   },
   mounted: function mounted() {
@@ -2017,16 +2022,19 @@ __webpack_require__.r(__webpack_exports__);
     clearCart: function clearCart() {
       this.cart = [];
       this.total = 0.00;
-      this.readyForCheckout = false;
+      this.amountPaid = null, this.readyForCheckout = false;
     },
     placeOrder: function placeOrder() {
+      var _this2 = this;
+
       return axios.get('/change', {
         params: {
           amountPaid: this.amountPaid,
           orderTotal: this.total
         }
       }).then(function (response) {
-        console.log(response);
+        _this2.changeOwed = response.data;
+        _this2.amountPaid = null, console.log(_this2.changeOwed.dollars);
       });
     }
   }
@@ -19808,13 +19816,13 @@ var render = function() {
                     _c(
                       "label",
                       {
-                        staticClass: "col-sm-3 col-form-label",
+                        staticClass: "col col-form-label",
                         attrs: { for: "amountDue" }
                       },
                       [_vm._v("Amount Due:")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-6" }, [
+                    _c("div", { staticClass: "col" }, [
                       _c("input", {
                         directives: [
                           {
@@ -19843,13 +19851,13 @@ var render = function() {
                     _c(
                       "label",
                       {
-                        staticClass: "col-sm-4 col-form-label",
+                        staticClass: "col col-form-label",
                         attrs: { for: "payment" }
                       },
                       [_vm._v("Payment Amount (in USD):")]
                     ),
                     _vm._v(" "),
-                    _c("div", { staticClass: "col-sm-4" }, [
+                    _c("div", { staticClass: "col" }, [
                       _c("input", {
                         directives: [
                           {
@@ -19860,7 +19868,7 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control",
-                        attrs: { type: "text", id: "payment" },
+                        attrs: { type: "text", id: "payment", required: "" },
                         domProps: { value: _vm.amountPaid },
                         on: {
                           input: function($event) {
@@ -19875,23 +19883,23 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-danger",
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.clearCart()
+                    _c("div", { staticClass: "col" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.clearCart()
+                            }
                           }
-                        }
-                      },
-                      [_vm._v("Clear cart")]
-                    ),
+                        },
+                        [_vm._v("Clear cart")]
+                      )
+                    ]),
                     _vm._v(" "),
-                    _c("button", { staticClass: "btn btn-primary" }, [
-                      _vm._v("Place Order")
-                    ])
+                    _vm._m(1)
                   ])
                 ]
               )
@@ -19908,6 +19916,14 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("ul", { staticClass: "unstyled-list" }, [
       _c("li", [_vm._v("Oh my, your cart is empty")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Place Order")])
     ])
   }
 ]

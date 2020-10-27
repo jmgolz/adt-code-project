@@ -54,28 +54,32 @@
                 <div v-if="readyForCheckout">
                      <form @submit.prevent="placeOrder">
                          <div class="form-group row">
-                            <label for="amountDue" class="col-sm-3 col-form-label">Amount Due:</label>
-                            <div class="col-sm-6">
+                            <label for="amountDue" class="col col-form-label">Amount Due:</label>
+                            <div class="col">
                                 <input v-model="total" type="text" readonly class="form-control-plaintext" id="amountDue">
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="payment" class="col-sm-4 col-form-label">Payment Amount (in USD):</label>
-                            <div class="col-sm-4">
-                                <input v-model="amountPaid" type="text" class="form-control" id="payment">
+                            <label for="payment" class="col col-form-label">Payment Amount (in USD):</label>
+                            <div class="col">
+                                <input v-model="amountPaid" type="text" class="form-control" id="payment" required>
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <button class="btn btn-danger" @click.prevent="clearCart()">Clear cart</button>
-                            <button class="btn btn-primary">Place Order</button>
+                            <div class="col">
+                                <button class="btn btn-danger" @click.prevent="clearCart()">Clear cart</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-primary">Place Order</button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>    
+    </div> 
 </template>
 
 <script>
@@ -85,8 +89,9 @@ export default {
             cart: [],
             products: null,
             total: 0.00,
-            amountPaid: 0.00,
-            readyForCheckout: false
+            amountPaid: null,
+            readyForCheckout: false,
+            changeOwed: {}
         }
     },
     mounted() {
@@ -107,6 +112,7 @@ export default {
         clearCart() {
             this.cart = []
             this.total = 0.00;
+            this.amountPaid = null,
             this.readyForCheckout = false;
         },
         placeOrder() {
@@ -117,7 +123,9 @@ export default {
                 }
             })
             .then(response => {
-                console.log(response);
+                this.changeOwed = response.data;
+                this.amountPaid = null,
+                console.log(this.changeOwed.dollars);
             })
         }
     }
