@@ -1992,6 +1992,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2000,7 +2027,7 @@ __webpack_require__.r(__webpack_exports__);
       total: 0.00,
       amountPaid: null,
       readyForCheckout: false,
-      changeOwed: {}
+      changeOwed: null
     };
   },
   mounted: function mounted() {
@@ -2034,7 +2061,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         _this2.changeOwed = response.data;
-        _this2.amountPaid = null, console.log(_this2.changeOwed.dollars);
+        _this2.amountPaid = null, console.log(_this2.changeOwed);
       });
     }
   }
@@ -19699,12 +19726,16 @@ var render = function() {
           _vm._l(_vm.products, function(product) {
             return _c(
               "li",
-              { key: product.collectionId, staticClass: "media" },
+              {
+                key: product.collectionId,
+                staticClass:
+                  "media rounded border border-secondary product-media-card"
+              },
               [
                 _c("img", {
                   staticClass: "mr-3",
                   attrs: {
-                    src: product.artworkUrl60,
+                    src: product.artworkUrl100,
                     alt: product.collectionName
                   }
                 }),
@@ -19731,7 +19762,7 @@ var render = function() {
                       _c(
                         "button",
                         {
-                          staticClass: "btn btn-success",
+                          staticClass: "btn btn-success btn-sm",
                           on: {
                             click: function($event) {
                               $event.preventDefault()
@@ -19756,11 +19787,15 @@ var render = function() {
           ? _c("div", [
               _c(
                 "ul",
-                { staticClass: "unstyled-list" },
+                { staticClass: "list-unstyled" },
                 _vm._l(_vm.cart, function(item) {
                   return _c(
                     "li",
-                    { key: item.collectionId, staticClass: "media" },
+                    {
+                      key: item.collectionId,
+                      staticClass:
+                        "media rounded border border-secondary product-media-card"
+                    },
                     [
                       _c("img", {
                         staticClass: "mr-3",
@@ -19904,6 +19939,58 @@ var render = function() {
                 ]
               )
             ])
+          : _vm._e(),
+        _vm._v(" "),
+        _vm.changeOwed
+          ? _c("div", { staticClass: "jumbotron jumbotron-padding-fix" }, [
+              _c("h5", [_vm._v("Change Owed")]),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "list-unstyled" },
+                [
+                  _c("li", [_vm._v("Dollars")]),
+                  _vm._v(" "),
+                  _vm._l(_vm.changeOwed.dollars, function(value, key) {
+                    return _vm.changeOwed.dollars
+                      ? _c("li", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(key) +
+                              " dollar(s): " +
+                              _vm._s(value) +
+                              "\n                    "
+                          )
+                        ])
+                      : _c("li", [_vm._v("None")])
+                  })
+                ],
+                2
+              ),
+              _vm._v(" "),
+              _c(
+                "ul",
+                { staticClass: "list-unstyled" },
+                [
+                  _c("li", [_vm._v("Cents")]),
+                  _vm._v(" "),
+                  _vm._l(_vm.changeOwed.cents, function(value, key) {
+                    return _vm.changeOwed.cents
+                      ? _c("li", [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(key) +
+                              " cent(s): " +
+                              _vm._s(value) +
+                              "\n                    "
+                          )
+                        ])
+                      : _c("li", [_vm._v("None")])
+                  })
+                ],
+                2
+              )
+            ])
           : _vm._e()
       ])
     ])
@@ -19914,8 +20001,21 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "unstyled-list" }, [
-      _c("li", [_vm._v("Oh my, your cart is empty")])
+    return _c("ul", { staticClass: "list-unstyled" }, [
+      _c(
+        "li",
+        {
+          staticClass:
+            "media rounded border border-secondary product-media-card"
+        },
+        [
+          _c("div", { staticClass: "media-body" }, [
+            _vm._v(
+              "\n                            Oh my, your cart is empty!\n                        "
+            )
+          ])
+        ]
+      )
     ])
   },
   function() {

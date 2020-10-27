@@ -4,9 +4,9 @@
             <!-- products display -->
             <div class="col">                
                     <ul class="unstyled-list">
-                        <li v-for="product in products" :key="product.collectionId" class="media">
+                        <li v-for="product in products" :key="product.collectionId" class="media rounded border border-secondary product-media-card">
                             <img 
-                                :src="product.artworkUrl60"
+                                :src="product.artworkUrl100"
                                 class="mr-3"
                                 :alt="product.collectionName"
                             />
@@ -18,7 +18,7 @@
                                     <li>Price: <b>{{product.collectionPrice}}</b></li>
                                     <li>{{product.copyright}}</li>
                                     <li>
-                                        <button class="btn btn-success" @click.prevent="addToCart(product)">Add to Cart</button>
+                                        <button class="btn btn-success btn-sm" @click.prevent="addToCart(product)">Add to Cart</button>
                                     </li>
                                 </ul>
                             </div>
@@ -28,9 +28,10 @@
             
 
             <div class="col">
+                <!-- Cart display -->
                 <div v-if="cart.length">
-                    <ul class="unstyled-list">
-                        <li v-for="item in cart" :key="item.collectionId" class="media">
+                    <ul class="list-unstyled">
+                        <li v-for="item in cart" :key="item.collectionId" class="media rounded border border-secondary product-media-card">
                             <img :src="item.artworkUrl60" class="mr-3" :alt="item.collectionName" />
 
                             <div class="media-body">
@@ -46,11 +47,16 @@
                 </div>
                 
                 <div v-else>
-                    <ul class="unstyled-list">
-                        <li>Oh my, your cart is empty</li>
+                    <ul class="list-unstyled">
+                        <li class="media rounded border border-secondary product-media-card">
+                            <div class="media-body">
+                                Oh my, your cart is empty!
+                            </div>
+                        </li>
                     </ul>
                 </div>
 
+                <!-- Checkout display -->
                 <div v-if="readyForCheckout">
                      <form @submit.prevent="placeOrder">
                          <div class="form-group row">
@@ -77,7 +83,28 @@
                         </div>
                     </form>
                 </div>
+
+                <!-- Change owed -->
+                <div v-if="changeOwed" class="jumbotron jumbotron-padding-fix">
+                    <h5>Change Owed</h5>
+                    <ul class="list-unstyled">
+                        <li>Dollars</li>
+                        <li v-if="changeOwed.dollars" v-for="(value, key) in changeOwed.dollars">
+                            {{key}} dollar(s): {{value}}
+                        </li>
+                        <li v-else>None</li>
+                    </ul>
+
+                    <ul class="list-unstyled">
+                        <li>Cents</li>
+                        <li v-if="changeOwed.cents" v-for="(value, key) in changeOwed.cents">
+                            {{key}} cent(s): {{value}}
+                        </li>
+                        <li v-else>None</li>
+                    </ul>
+                </div>
             </div>
+
         </div>
     </div> 
 </template>
@@ -91,7 +118,7 @@ export default {
             total: 0.00,
             amountPaid: null,
             readyForCheckout: false,
-            changeOwed: {}
+            changeOwed: null
         }
     },
     mounted() {
@@ -125,7 +152,7 @@ export default {
             .then(response => {
                 this.changeOwed = response.data;
                 this.amountPaid = null,
-                console.log(this.changeOwed.dollars);
+                console.log(this.changeOwed);
             })
         }
     }
